@@ -3,6 +3,8 @@ package com.example.appbooking.activities;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,26 +13,37 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appbooking.R;
 import com.example.appbooking.databinding.ActivityMainBinding;
+import com.example.appbooking.models.BusRoute;
+import com.example.appbooking.ultis.LoadingBar;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
     private FirebaseAuth firebaseAuth;
+
+    private BusRoute busRoute;
+
+    private String fromTxt = null, toTxt = null, dateTxt = null;
+
+    private final LoadingBar loadingBar = new LoadingBar(MainActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 Toast.makeText(MainActivity.this, "Vui lòng đăng nhập trước", Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent(getApplicationContext(), ListBusesActivity.class);
-                startActivity(intent);
+                searchBus(fromTxt, toTxt, dateTxt);
             }
         });
 
@@ -78,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         binding.fromSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, cityArrays[position], Toast.LENGTH_SHORT).show();
+                fromTxt = cityArrays[position];
             }
 
             @Override
@@ -90,8 +102,7 @@ public class MainActivity extends AppCompatActivity {
         binding.toSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, cityArrays[position], Toast.LENGTH_SHORT).show();
-                searchBus();
+                toTxt = cityArrays[position];
             }
 
             @Override
@@ -121,12 +132,17 @@ public class MainActivity extends AppCompatActivity {
                 calendar.set(year, month, dayOfMonth);
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 binding.dateEdt.setText(simpleDateFormat.format(calendar.getTime()));
+                dateTxt = simpleDateFormat.format(calendar.getTime());
             }
         }, year, month, date);
         datePickerDialog.show();
     }
 
-    private void searchBus(){
-        FirebaseFirestore.getInstance().collection("BusRoute");
+    private void searchBus(String fromLocation, String toLocation, String date){
+        Intent intent = new Intent(getApplicationContext(), ListBusesActivity.class);
+        intent.putExtra("fromLocation", fromLocation);
+        intent.putExtra("toLocation", toLocation);
+        intent.putExtra("date", date);
+        startActivity(intent);
     }
 }
