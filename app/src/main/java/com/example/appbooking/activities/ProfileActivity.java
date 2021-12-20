@@ -96,6 +96,11 @@ public class ProfileActivity extends AppCompatActivity{
             finish();
         });
 
+        binding.bookedTicketCv.setOnClickListener(view ->{
+            Intent intent = new Intent(getApplicationContext(), ConfirmBookingActivity.class);
+            startActivity(intent);
+        });
+
         binding.updateBtn.setOnClickListener(view ->{
             String name = binding.nameEdt.getText().toString();
             String address = binding.addressEdt.getText().toString();

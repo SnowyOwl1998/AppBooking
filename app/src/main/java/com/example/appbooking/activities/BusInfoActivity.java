@@ -1,20 +1,30 @@
 package com.example.appbooking.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.appbooking.R;
 import com.example.appbooking.databinding.ActivityBusInfoBinding;
 import com.example.appbooking.models.BusRoute;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class BusInfoActivity extends AppCompatActivity {
 
@@ -45,7 +55,25 @@ public class BusInfoActivity extends AppCompatActivity {
                 if(busRoute.getSlotAvailable() == 0){
                     Toast.makeText(BusInfoActivity.this, "Đã hết chỗ, vui lòng đặt xe khác", Toast.LENGTH_SHORT).show();
                 }else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BusInfoActivity.this);
+                    builder.setCancelable(true);
+                    builder.setTitle("Xác nhận");
+                    builder.setMessage("Bạn có muốn đặt vé xe không?");
+                    builder.setPositiveButton("Xác nhận",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    confirmBooking(busRoute);
+                                }
+                            });
+                    builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             }
         });
@@ -71,5 +99,37 @@ public class BusInfoActivity extends AppCompatActivity {
         binding.typeTv.setText(busRoute.getType());
         binding.priceTv.setText(price);
         binding.slotTv.setText(slotTxt);
+    }
+
+    private void confirmBooking(BusRoute busRoute){
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String phoneNumber = firebaseUser.getPhoneNumber();
+
+        Map<String, Object> bookedTicket = new HashMap<>();
+        bookedTicket.put("from", busRoute.getFrom());
+        bookedTicket.put("to", busRoute.getTo());
+        bookedTicket.put("date", busRoute.getDate());
+        bookedTicket.put("time", busRoute.getTime());
+        bookedTicket.put("type", busRoute.getType());
+        bookedTicket.put("company", busRoute.getCompany());
+        bookedTicket.put("price", busRoute.getPrice());
+
+        FirebaseFirestore.getInstance().collection("User")
+                .document(phoneNumber)
+                .collection("Booked")
+                .document()
+                .set(bookedTicket)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Intent intent = new Intent(getApplicationContext(), ConfirmBookingActivity.class);
+                        startActivity(intent);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("confirmBooking", "onFailure: ", e);
+            }
+        });
     }
 }

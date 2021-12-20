@@ -1,6 +1,7 @@
 package com.example.appbooking.activities;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -38,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     private FirebaseAuth firebaseAuth;
-
-    private BusRoute busRoute;
 
     private String fromTxt = null, toTxt = null, dateTxt = null;
 
@@ -133,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 binding.dateEdt.setText(simpleDateFormat.format(calendar.getTime()));
                 dateTxt = simpleDateFormat.format(calendar.getTime());
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
         }, year, month, date);
         datePickerDialog.show();
