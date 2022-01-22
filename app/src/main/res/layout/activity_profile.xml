@@ -82,11 +82,11 @@
                 android:textColorHint="#FF8A99AF">
 
                 <EditText
-                    android:id="@+id/phone_edt"
+                    android:id="@+id/username_edt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/calibri"
-                    android:hint="+84 000 000 000"
+                    android:hint="Tài khoản"
                     android:inputType="phone"
                     android:enabled="false"
                     android:maxLines="1"
@@ -165,7 +165,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
                     android:fontFamily="@font/calibri"
-                    android:text="Danh sách vé đã dặt"
+                    android:text="Danh sách vé đã đặt"
                     android:textColor="#4b4b4b"
                     android:textStyle="bold"
                     android:gravity="center"
@@ -180,22 +180,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/update_Btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:text="Cập nhật"/>
 
         <Button
             android:id="@+id/logout_Btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Đăng xuất"/>
+            android:text="Đăng xuất" />
 
     </LinearLayout>
 

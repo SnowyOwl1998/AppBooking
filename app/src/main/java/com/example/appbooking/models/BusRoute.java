@@ -4,11 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class BusRoute implements Parcelable {
-    private String from, to, date, time, type, company, price;
+    private int id, price;
+    private String from, to, date, time, type, company;
 
     private int slotAvailable;
 
-    public BusRoute(String from, String to, String date, String time, String type, String company, String price, Integer slotAvailable) {
+    public BusRoute(int id, String from, String to, String date, String time, String type, String company, int price, Integer slotAvailable) {
+        this.id = id;
         this.from = from;
         this.to = to;
         this.date = date;
@@ -20,13 +22,14 @@ public class BusRoute implements Parcelable {
     }
 
     protected BusRoute(Parcel in) {
+        id = in.readInt();
         from = in.readString();
         to = in.readString();
         date = in.readString();
         time = in.readString();
         type = in.readString();
         company = in.readString();
-        price = in.readString();
+        price = in.readInt();
         slotAvailable = in.readInt();
     }
 
@@ -90,11 +93,11 @@ public class BusRoute implements Parcelable {
         this.company = company;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -106,6 +109,14 @@ public class BusRoute implements Parcelable {
         this.slotAvailable = slotAvailable;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -113,13 +124,14 @@ public class BusRoute implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(from);
         dest.writeString(to);
         dest.writeString(date);
         dest.writeString(time);
         dest.writeString(type);
         dest.writeString(company);
-        dest.writeString(price);
+        dest.writeInt(price);
         dest.writeInt(slotAvailable);
     }
 }

@@ -1,12 +1,28 @@
 package com.example.appbooking.models;
 
 public class User {
-    private String name, address, phoneNumber;
+    private String name;
+    private String password;
+    private String address;
+    private String username;
 
-    public User(String name, String address, String phoneNumber) {
+    public User (String name, String password, String address, String username) {
         this.name = name;
+        this.password = password;
         this.address = address;
-        this.phoneNumber = phoneNumber;
+        this.username = username;
+    }
+
+    public User() {
+
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -25,11 +41,11 @@ public class User {
         this.address = address;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

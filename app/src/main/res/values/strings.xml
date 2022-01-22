@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Bus Booking</string>
-    <string name="string_resend">Không nhận được mã OTP? <b>Gửi lại.</b></string>
+    <string name="string_signin">Bạn đã có tài khoản? <b><u>ĐĂNG NHẬP.</u></b></string>
+    <string name="string_signup">Bạn chưa có tài khoản? <b><u>ĐĂNG KÝ.</u></b></string>
 </resources>

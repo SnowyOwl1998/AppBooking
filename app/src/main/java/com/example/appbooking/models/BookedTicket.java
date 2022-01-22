@@ -1,9 +1,10 @@
 package com.example.appbooking.models;
 
 public class BookedTicket {
-    private String from, to, date, time, type, company, price;
+    private String from, to, date, time, type, company;
+    private int price;
 
-    public BookedTicket(String from, String to, String date, String time, String type, String company, String price) {
+    public BookedTicket(String from, String to, String date, String time, String type, String company, int price) {
         this.from = from;
         this.to = to;
         this.date = date;
@@ -61,11 +62,11 @@ public class BookedTicket {
         this.company = company;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 }

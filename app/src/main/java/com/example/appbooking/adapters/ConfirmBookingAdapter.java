@@ -35,7 +35,7 @@ public class ConfirmBookingAdapter extends ArrayAdapter<BookedTicket> {
 
         Locale locale = new Locale("vi", "VN");
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-        String price = numberFormat.format(Integer.parseInt(bookedTickets.get(position).getPrice()));
+        String price = numberFormat.format(bookedTickets.get(position).getPrice());
 
         TextView companyTxt = convertView.findViewById(R.id.company_Tv);
         TextView typeTxt = convertView.findViewById(R.id.type_Tv);

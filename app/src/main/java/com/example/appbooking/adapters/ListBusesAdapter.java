@@ -39,7 +39,7 @@ public class ListBusesAdapter extends ArrayAdapter<BusRoute> {
 
         Locale locale = new Locale("vi", "VN");
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-        String price = numberFormat.format(Integer.parseInt(busRoutes.get(position).getPrice()));
+        String price = numberFormat.format(busRoutes.get(position).getPrice());
 
         TextView companyTxt = convertView.findViewById(R.id.company_Tv);
         TextView typeTxt = convertView.findViewById(R.id.type_Tv);
